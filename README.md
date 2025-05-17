@@ -1,1 +1,1 @@
-Jackdaw-mediated removal of scats lynx samples simulation.
+Simulation of jackdaw-mediated removal of lynx scat samples.
