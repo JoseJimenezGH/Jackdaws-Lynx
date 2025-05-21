@@ -81,7 +81,7 @@ simSCR0Poisson <- function(discard0 = TRUE, N=N, K=25, p0=0.1, sigma=1,
     }
     Y <- aperm(Y, c(1, 3, 2))
 
-    # Remove 75% of samples at specific traps
+    # Remove all samples at specific traps
     Y[, c(14,15,16,22,23,24,30,31,32,39,40,46,47,48,
           54,55,56,63,64, 9,17,18,19,25,26,27,33,34), ] <- 0
 
