@@ -7,6 +7,7 @@
 #                                                                              #
 #==============================================================================#
 rm(list=ls(all=TRUE))
+
 # Set working directory
 setwd('C:/...')
 
@@ -90,6 +91,7 @@ function (discard0 = TRUE, N=N, K=25,  p0=0.1,  sigma=1,
       N = N, p0 = p0, sigma = sigma,  S=S, K = K, buffer=buffer)
 }
 
+# Simulations
 for (sim in 1:100) {
   data <- simSCR0Poisson(N=N, K=K, array3d = TRUE, p0=0.1, sigma=1, discard0=FALSE, rnd=sim)
 
@@ -99,7 +101,8 @@ for (sim in 1:100) {
   rv <- 0.25 # Removal rate (0, 0.25, 0.5)
 
   # Traps with removal
-  jackdaw <- c(14,15,16,22,23,24,30,31,32,39,40,46,47,48,54,55,56,63,64,9,17,18,19,25,26,27,33,34)
+  jackdaw <- c(14,15,16,22,23,24,30,31,32,39,40,46,47,48,
+	       54,55,56,63,64,9,17,18,19,25,26,27,33,34)
   
   # Simulating removal process:
   index_pos <- which(y3d[, jackdaw, ] > 0)
@@ -175,7 +178,7 @@ for (sim in 1:100) {
     for(i in 1:M){
       z[i] ~ dbern(psi)            # Latent indicator: 1 if individual is part of population
       # Prior for activity center locations
-	  s[i,1] ~ dunif(xlim[1],xlim[2])
+      s[i,1] ~ dunif(xlim[1],xlim[2])
       s[i,2] ~ dunif(ylim[1],ylim[2])
 
       # Calculate detection rate for each trap
