@@ -1,7 +1,7 @@
 #==============================================================================#
 #                                                                              #
 #                            SPATIAL CAPTURE-RECAPTURE                         #
-#                         Jackdaw-mediated removal of samples                  #
+#                        Jackdaw-mediated removal of samples                   #
 #                                 José Jiménez                                 #
 #                            22:37 10:18 29/06/2025                            #
 #                                                                              #
@@ -23,11 +23,11 @@ library(nimble)
 N <- 10  # Population size
 K <- 5   # Number of capture occasions
 
-# Define three jackdaws colony locations
+# Define locations for three jackdaw colonies
 set.seed(123)
 colonies<-cbind(runif(3,1,8),runif(3,1,8))
 
-# Function to simulate SCR data under a Poisson model. Extracted from scrbook package
+# Function to simulate SCR data under a Poisson model. Extracted from the scrbook package
 simSCR0Poisson<-
 function (discard0 = TRUE, N=N, K=25,  p0=0.1,  sigma=1,
   buffer=buffer, array3d = TRUE, rnd = 2013)
@@ -100,11 +100,11 @@ for (sim in 1:100) {
 
   rv <- 0.25 # Removal rate (0, 0.25, 0.5)
 
-  # Traps with removal
+  # Traps subject to removal
   jackdaw <- c(14,15,16,22,23,24,30,31,32,39,40,46,47,48,
 	       54,55,56,63,64,9,17,18,19,25,26,27,33,34)
   
-  # Simulating removal process:
+  # Simulating the removal process:
   index_pos <- which(y3d[, jackdaw, ] > 0)
   n_reemp <- floor(rv * length(index_pos))     # Remove
   index2change <- sample(index_pos, n_reemp)
@@ -176,7 +176,7 @@ for (sim in 1:100) {
     psi ~ dunif(0,1)               # Inclusion probability for data augmentation
     # Loop over all augmented individuals
     for(i in 1:M){
-      z[i] ~ dbern(psi)            # Latent indicator: 1 if individual is part of population
+      z[i] ~ dbern(psi)            # Latent indicator: 1 if the individual is part of the population
       # Prior for activity center locations
       s[i,1] ~ dunif(xlim[1],xlim[2])
       s[i,2] ~ dunif(ylim[1],ylim[2])
@@ -206,14 +206,14 @@ for (sim in 1:100) {
   })
 
 
-  #-----------------------------------------#
-  #     CUSTOM FUNCTION AND DISTRIBUTIONS   #
-  #-----------------------------------------#
+  #------------------------------------------#
+  #     CUSTOM FUNCTIONS AND DISTRIBUTIONS   #
+  #------------------------------------------#
   GetDetectionRate <- nimbleFunction(
     run = function(s = double(1), p0=double(0), sigma=double(0), 
                    X=double(2), J=double(0), z=double(0)){ 
       returnType(double(1))
-      if(z==0) return(rep(0,J)) # No detection if individual is not present
+      if(z==0) return(rep(0,J)) # No detection if the individual is not present
       if(z==1){
         d2 <- ((s[1]-X[1:J,1])^2 + (s[2]-X[1:J,2])^2)
         ans <- p0*exp(-d2/(2*sigma^2))
