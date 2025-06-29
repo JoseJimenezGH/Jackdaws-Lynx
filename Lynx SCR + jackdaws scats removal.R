@@ -39,35 +39,35 @@ function (discard0 = TRUE, N=N, K=25,  p0=0.1,  sigma=1,
     plot(traplocs)
     
     # Define state space limits
-	buffer <- 2.5*sigma
+    buffer <- 2.5*sigma
     Xl <- min(traplocs[, 1] - buffer)
     Xu <- max(traplocs[, 1] + buffer)
     Yl <- min(traplocs[, 2] - buffer)
     Yu <- max(traplocs[, 2] + buffer)
     
     # Simulate individual activity centers
-	sx <- runif(N, Xl, Xu)
+    sx <- runif(N, Xl, Xu)
     sy <- runif(N, Yl, Yu)
     S <- cbind(sx, sy)
     
     # Plot traps and activity centers
-	plot(traplocs, pch=3, col='blue', xlim=c(Xl, Xu), ylim=c(Yl, Yu))
+    plot(traplocs, pch=3, col='blue', xlim=c(Xl, Xu), ylim=c(Yl, Yu))
     points(S, pch=16, col='red')
     
     # Calculate detection probabilities
-	D <- e2dist(S, traplocs)
+    D <- e2dist(S, traplocs)
     alpha1 <- 1/(2 * sigma * sigma)
     alpha0<-log(p0)
     muy <- exp(alpha0) * exp(-alpha1 * D * D)
     
     # Simulate detections
-	Y <- matrix(NA, nrow = N, ncol = ntraps)
+    Y <- matrix(NA, nrow = N, ncol = ntraps)
     for (i in 1:nrow(Y)) {
       Y[i, ] <- rpois(ntraps, K * muy[i, ])
     }
     
     # Optionally discard individuals with no detections	
-	if (discard0) {
+    if (discard0) {
       totalcaps <- apply(Y, 1, sum)
       Y <- Y[totalcaps > 0, ]
     }
@@ -80,7 +80,7 @@ function (discard0 = TRUE, N=N, K=25,  p0=0.1,  sigma=1,
           }
         }
       Y<-aperm(Y,c(1,3,2))
-	  if (discard0) {
+        if (discard0) {
         Y2d <- apply(Y, c(1, 3), sum)
         ncaps <- apply(Y2d, 1, sum)
         Y <- Y[ncaps > 0, , ]
@@ -88,7 +88,7 @@ function (discard0 = TRUE, N=N, K=25,  p0=0.1,  sigma=1,
     }
    	
     list(Y = Y, traplocs = traplocs, xlim = c(Xl, Xu), ylim = c(Yl,Yu),
-      N = N, p0 = p0, sigma = sigma,  S=S, K = K, buffer=buffer)
+         N = N, p0 = p0, sigma = sigma,  S=S, K = K, buffer=buffer)
 }
 
 # Simulations
